@@ -1,15 +1,18 @@
 import { useState } from 'react'
-import { View, Text, TouchableOpacity, StyleSheet, TextInput, Modal } from 'react-native'
+import { View, Text, TouchableOpacity, StyleSheet, TextInput, Modal, ActivityIndicator } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { colors, spacing } from '../theme'
 import { useStorage } from '../hooks/useStorage'
+import { usePro } from '../hooks/usePro'
 import { Ionicons } from '@expo/vector-icons'
 
 export default function SettingsScreen() {
-  const { settings, updateSettings, clearAllData } = useStorage()
+  const { settings, updateSettings, clearAllData, isPro } = useStorage()
+  const { restore, restoreInFlight, error: proError, clearError: clearProError } = usePro()
   const insets = useSafeAreaInsets()
   const [priceInput, setPriceInput] = useState(String(settings.pricePerStick))
   const [showModal, setShowModal] = useState(false)
+  const [restoreMessage, setRestoreMessage] = useState(null)
 
   const currencySymbol = settings.currency === 'INR' ? '₹' : '$'
 
@@ -37,10 +40,69 @@ export default function SettingsScreen() {
     await clearAllData()
   }
 
+  const handleRestore = async () => {
+    if (proError) clearProError()
+    setRestoreMessage(null)
+    const ok = await restore()
+    if (ok) {
+      setRestoreMessage('Lifetime unlocked. Thanks!')
+    } else if (!proError) {
+      setRestoreMessage('No previous purchase found for this account.')
+    }
+  }
+
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
       <View style={styles.header}>
         <Text style={styles.title}>Settings</Text>
+      </View>
+
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>Account</Text>
+        <View style={styles.row}>
+          <View style={styles.rowLeft}>
+            <Ionicons
+              name={isPro ? 'shield-checkmark' : 'lock-closed-outline'}
+              size={22}
+              color={isPro ? colors.green : colors.textDim}
+            />
+            <View>
+              <Text style={styles.rowLabel}>{isPro ? 'Soothe Pro' : 'Free preview'}</Text>
+              <Text style={styles.rowSubLabel}>
+                {isPro ? 'Lifetime unlocked' : 'One-time $4.99 unlock'}
+              </Text>
+            </View>
+          </View>
+          {isPro ? (
+            <View style={styles.proBadge}>
+              <Text style={styles.proBadgeText}>PRO</Text>
+            </View>
+          ) : null}
+        </View>
+        {!isPro ? (
+          <TouchableOpacity
+            style={[styles.row, styles.restoreRow]}
+            onPress={handleRestore}
+            disabled={restoreInFlight}
+            activeOpacity={0.7}
+          >
+            <View style={styles.rowLeft}>
+              <Ionicons name="refresh-outline" size={20} color={colors.textDim} />
+              <Text style={styles.rowLabel}>Restore purchases</Text>
+            </View>
+            {restoreInFlight ? (
+              <ActivityIndicator color={colors.textDim} size="small" />
+            ) : (
+              <Ionicons name="chevron-forward" size={18} color={colors.textMuted} />
+            )}
+          </TouchableOpacity>
+        ) : null}
+        {restoreMessage ? (
+          <Text style={styles.restoreMessage}>{restoreMessage}</Text>
+        ) : null}
+        {proError ? (
+          <Text style={styles.restoreError}>{proError}</Text>
+        ) : null}
       </View>
 
       <View style={styles.section}>
@@ -267,5 +329,37 @@ const styles = StyleSheet.create({
     color: colors.text,
     fontSize: 16,
     fontWeight: '700',
+  },
+  rowSubLabel: {
+    fontSize: 12,
+    color: colors.textMuted,
+    marginTop: 2,
+  },
+  proBadge: {
+    backgroundColor: colors.green,
+    paddingHorizontal: spacing.sm,
+    paddingVertical: 4,
+    borderRadius: 6,
+  },
+  proBadgeText: {
+    color: colors.bg,
+    fontSize: 11,
+    fontWeight: '800',
+    letterSpacing: 1,
+  },
+  restoreRow: {
+    marginTop: spacing.sm,
+  },
+  restoreMessage: {
+    fontSize: 12,
+    color: colors.green,
+    marginTop: spacing.sm,
+    paddingLeft: spacing.xs,
+  },
+  restoreError: {
+    fontSize: 12,
+    color: colors.primary,
+    marginTop: spacing.sm,
+    paddingLeft: spacing.xs,
   },
 })

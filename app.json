@@ -4,7 +4,7 @@
     "slug": "soothe",
     "description": "A private, on-device tracker for daily habits and money spent. Mindful logging. No accounts. No ads. No servers.",
     "githubUrl": "https://github.com/ggmxip/soothe",
-    "version": "1.0.2",
+    "version": "1.1.0",
     "orientation": "portrait",
     "scheme": "soothe",
     "icon": "./assets/icon.png",
@@ -19,13 +19,15 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.soothe.app",
-      "buildNumber": "3",
+      "buildNumber": "4",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false,
         "NSPrivacyAccessedAPITypes": [
           {
             "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategoryUserDefaults",
-            "NSPrivacyAccessedAPITypeReasons": ["CA92.1"]
+            "NSPrivacyAccessedAPITypeReasons": [
+              "CA92.1"
+            ]
           }
         ]
       }
@@ -37,18 +39,20 @@
       },
       "edgeToEdgeEnabled": true,
       "package": "com.soothe.app",
-      "versionCode": 3
+      "versionCode": 4
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
-      "expo-font"
+      "expo-font",
+      "expo-iap"
     ],
     "extra": {
       "eas": {
         "projectId": "9802ded9-89ee-4ed2-8037-d0a7491a14c4"
-      }
+      },
+      "privacyPolicyUrl": "https://soothe.app/privacy"
     },
     "owner": "ggmxip"
   }

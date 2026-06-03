@@ -4,6 +4,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 const STORAGE_KEYS = {
   logs: '@soothe_logs',
   settings: '@soothe_settings',
+  pro: '@soothe_pro',
+}
+
+export const PRODUCT_IDS = {
+  lifetime: 'soothe_lifetime',
 }
 
 const defaultSettings = {
@@ -30,14 +35,18 @@ export function useStorage() {
   const [logs, setLogs] = useState({})
   const [settings, setSettings] = useState(defaultSettings)
   const [loaded, setLoaded] = useState(false)
+  const [isPro, setIsPro] = useState(false)
+  const [proChecked, setProChecked] = useState(false)
   const mounted = useRef(true)
 
   const refresh = useCallback(async () => {
     const storedLogs = await getStoredData(STORAGE_KEYS.logs)
     const storedSettings = await getStoredData(STORAGE_KEYS.settings)
+    const storedPro = await getStoredData(STORAGE_KEYS.pro)
     if (mounted.current) {
       setLogs(storedLogs || {})
       setSettings(storedSettings ? { ...defaultSettings, ...storedSettings } : defaultSettings)
+      setIsPro(storedPro === true)
       setLoaded(true)
     }
   }, [])
@@ -50,6 +59,18 @@ export function useStorage() {
       listeners.delete(refresh)
     }
   }, [refresh])
+
+  const setPro = useCallback(async (value) => {
+    await storeData(STORAGE_KEYS.pro, !!value)
+    if (mounted.current) {
+      setIsPro(!!value)
+      setProChecked(true)
+    }
+  }, [])
+
+  const markProChecked = useCallback(() => {
+    if (mounted.current) setProChecked(true)
+  }, [])
 
   const updateLog = useCallback(async (date, data) => {
     const stored = (await getStoredData(STORAGE_KEYS.logs)) || {}
@@ -154,6 +175,10 @@ export function useStorage() {
     logs,
     settings,
     loaded,
+    isPro,
+    proChecked,
+    setPro,
+    markProChecked,
     updateLog,
     getLog,
     updateSettings,
