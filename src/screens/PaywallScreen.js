@@ -63,7 +63,7 @@ export default function PaywallScreen() {
           <Feature
             icon="cash-outline"
             title="Multi-currency"
-            body="Toggle between INR and USD. Localised totals and formatting."
+            body="Toggle between INR, USD, and other currencies. Localised number formatting."
           />
         </View>
 
@@ -113,8 +113,10 @@ export default function PaywallScreen() {
           <View style={styles.devBanner}>
             <Text style={styles.devBannerTitle}>Dev / Web preview</Text>
             <Text style={styles.devBannerText}>
-              In-app purchases are only available on a real iOS or Android build. Use this build
-              to preview the UI, then run an EAS dev build to test the IAP flow.
+              In-app purchases need a real iOS or Android build.
+            </Text>
+            <Text style={styles.devBannerText}>
+              This is a UI preview only. Test the purchase flow on an EAS dev build.
             </Text>
             <TouchableOpacity
               style={styles.devSkip}
@@ -327,7 +329,7 @@ const styles = StyleSheet.create({
     color: colors.textDim,
     fontSize: 12,
     lineHeight: 17,
-    marginBottom: spacing.sm,
+    marginBottom: 4,
   },
   devSkip: {
     alignSelf: 'flex-start',
