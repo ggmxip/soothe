@@ -36,8 +36,8 @@ export function useStorage() {
     const storedLogs = await getStoredData(STORAGE_KEYS.logs)
     const storedSettings = await getStoredData(STORAGE_KEYS.settings)
     if (mounted.current) {
-      if (storedLogs) setLogs(storedLogs)
-      if (storedSettings) setSettings({ ...defaultSettings, ...storedSettings })
+      setLogs(storedLogs || {})
+      setSettings(storedSettings ? { ...defaultSettings, ...storedSettings } : defaultSettings)
       setLoaded(true)
     }
   }, [])
@@ -75,10 +75,14 @@ export function useStorage() {
   }, [])
 
   const clearAllData = useCallback(async () => {
-    await AsyncStorage.multiRemove([STORAGE_KEYS.logs, STORAGE_KEYS.settings])
-    setLogs({})
-    setSettings(defaultSettings)
-    emitChange()
+    try {
+      await AsyncStorage.multiRemove([STORAGE_KEYS.logs, STORAGE_KEYS.settings])
+      setLogs({})
+      setSettings(defaultSettings)
+      emitChange()
+    } catch (e) {
+      console.error('Failed to clear data:', e)
+    }
   }, [])
 
   const getMonthLogs = useCallback(

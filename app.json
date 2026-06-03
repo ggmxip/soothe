@@ -2,10 +2,14 @@
   "expo": {
     "name": "Soothe",
     "slug": "soothe",
-    "version": "1.0.0",
+    "description": "A private, on-device tracker for daily habits and money spent. Mindful logging. No accounts. No ads. No servers.",
+    "githubUrl": "https://github.com/ggmxip/soothe",
+    "version": "1.0.2",
     "orientation": "portrait",
+    "scheme": "soothe",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "dark",
+    "primaryColor": "#FF3131",
     "newArchEnabled": true,
     "splash": {
       "image": "./assets/splash-icon.png",
@@ -13,7 +17,18 @@
       "backgroundColor": "#0D0D0D"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.soothe.app",
+      "buildNumber": "3",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false,
+        "NSPrivacyAccessedAPITypes": [
+          {
+            "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategoryUserDefaults",
+            "NSPrivacyAccessedAPITypeReasons": ["CA92.1"]
+          }
+        ]
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -21,10 +36,20 @@
         "backgroundColor": "#0D0D0D"
       },
       "edgeToEdgeEnabled": true,
-      "package": "com.soothe.app"
+      "package": "com.soothe.app",
+      "versionCode": 3
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [
+      "expo-font"
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "9802ded9-89ee-4ed2-8037-d0a7491a14c4"
+      }
+    },
+    "owner": "ggmxip"
   }
 }

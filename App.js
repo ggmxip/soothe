@@ -1,6 +1,7 @@
 import { StatusBar } from 'expo-status-bar'
 import { NavigationContainer } from '@react-navigation/native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { Ionicons } from '@expo/vector-icons'
 import { colors } from './src/theme'
 import HomeScreen from './src/screens/HomeScreen'
@@ -12,6 +13,7 @@ const Tab = createBottomTabNavigator()
 
 export default function App() {
   return (
+    <SafeAreaProvider>
     <NavigationContainer>
       <StatusBar style="light" />
       <Tab.Navigator
@@ -52,5 +54,6 @@ export default function App() {
         <Tab.Screen name="Settings" component={SettingsScreen} />
       </Tab.Navigator>
     </NavigationContainer>
+    </SafeAreaProvider>
   )
 }

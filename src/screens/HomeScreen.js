@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { colors, spacing } from '../theme'
@@ -14,6 +14,11 @@ export default function HomeScreen() {
   const [count, setCount] = useState(entry.count || 0)
   const [priceInput, setPriceInput] = useState(String(entry.price ?? settings.pricePerStick))
   const saved = entry.count > 0
+
+  useEffect(() => {
+    setCount(entry.count || 0)
+    setPriceInput(String(entry.price ?? settings.pricePerStick))
+  }, [entry.count, entry.price, settings.pricePerStick])
 
   const handleAdd = useCallback(async () => {
     const newCount = count + 1
