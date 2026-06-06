@@ -14,7 +14,7 @@ Soothe ("the app", "we", "us") is built around a single principle: **your data n
 
 ## What data the app stores on your device
 
-All data is stored locally using `AsyncStorage` (Android) / `NSUserDefaults` (iOS) and is encrypted at rest by the operating system.
+All data is stored locally in the app's sandboxed storage area: `AsyncStorage` (Android) / `NSUserDefaults` (iOS). The data is protected by the operating system: iOS encrypts app sandbox data at rest when the device is locked, and Android applies file-based encryption to app storage on a passcode-protected device. Soothe does not implement its own encryption layer.
 
 - **Daily logs** — date, count, and price per stick you have entered. Used to draw the Home counter, Calendar grid, and Analytics charts.
 - **Settings** — your preferred currency (INR or USD) and default price per stick.

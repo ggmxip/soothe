@@ -36,11 +36,11 @@ export function usePro() {
         purchaseUpdateSub = iap.purchaseUpdatedListener(async (purchase) => {
           if (purchase?.productId === PRODUCT_IDS.lifetime) {
             try {
-              await iap.finishTransaction({ purchase, isConsumable: false })
               await setPro(true)
+              await iap.finishTransaction({ purchase, isConsumable: false })
               setError(null)
             } catch (e) {
-              setError('Purchase could not be finalised. Please try again.')
+              setError('Purchase received. If the unlock does not appear, tap Restore purchases once.')
             }
           }
         })
@@ -92,7 +92,7 @@ export function usePro() {
         iapRef.current.endConnection().catch(() => {})
       }
     }
-  }, [markProChecked, proChecked, setPro])
+  }, [markProChecked, setPro])
 
   const purchase = useCallback(async () => {
     if (isWeb) {

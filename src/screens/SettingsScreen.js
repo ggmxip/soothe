@@ -134,6 +134,7 @@ export default function SettingsScreen() {
               onChangeText={handlePriceChange}
               onBlur={handlePriceSave}
               keyboardType="numeric"
+              maxLength={10}
               placeholderTextColor={colors.textMuted}
               placeholder="0"
             />
@@ -164,6 +165,9 @@ export default function SettingsScreen() {
             <Text style={styles.modalTitle}>Clear All Data?</Text>
             <Text style={styles.modalText}>
               This will permanently delete all your logs and reset settings. This action cannot be undone.
+            </Text>
+            <Text style={styles.modalFootnote}>
+              Your Soothe Pro unlock is stored with the App Store / Play Store and will be restored automatically.
             </Text>
             <View style={styles.modalActions}>
               <TouchableOpacity style={styles.modalNoBtn} onPress={() => setShowModal(false)} activeOpacity={0.7}>
@@ -297,6 +301,13 @@ const styles = StyleSheet.create({
     color: colors.textDim,
     textAlign: 'center',
     lineHeight: 20,
+    marginBottom: spacing.md,
+  },
+  modalFootnote: {
+    fontSize: 12,
+    color: colors.textMuted,
+    textAlign: 'center',
+    lineHeight: 17,
     marginBottom: spacing.lg,
   },
   modalActions: {

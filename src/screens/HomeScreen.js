@@ -98,6 +98,7 @@ export default function HomeScreen() {
             onChangeText={handlePriceChange}
             onBlur={handlePriceBlur}
             keyboardType="numeric"
+            maxLength={10}
             placeholderTextColor={colors.textMuted}
             placeholder="0"
           />

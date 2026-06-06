@@ -19,6 +19,9 @@ const SUPPORT_EMAIL = 'mailto:adityaishan.dev@gmail.com'
 export default function PaywallScreen() {
   const insets = useSafeAreaInsets()
   const { isPro, purchasing, restoreInFlight, error, purchase, restore, clearError } = usePro()
+  // __DEV__ is replaced with `false` at bundle time in EAS production builds,
+  // so the dev banner never ships to the App Store / Play Store. It only
+  // appears in `npx expo start --web` and internal EAS dev builds.
   const [showSkipBanner, setShowSkipBanner] = useState(__DEV__ && !isPro)
 
   if (isPro) return null
